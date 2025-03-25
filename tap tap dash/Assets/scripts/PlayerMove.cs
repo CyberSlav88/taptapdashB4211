@@ -1,11 +1,15 @@
 using UnityEngine;
 using System.Collections;
+using UnityEngine.SceneManagement;
 
 public class PlayerMove : MonoBehaviour
 {
     [SerializeField] private float _playerSpeed;
     [SerializeField] private float _jumpForce;
     [SerializeField] private float _gravityScale;
+
+    [SerializeField] private float _minDieSpeed;
+    [SerializeField] private float _maxDieSpeed;
 
     private Rigidbody _rb;
 
@@ -14,6 +18,9 @@ public class PlayerMove : MonoBehaviour
     private bool _direction;
 
     private bool _isGround;
+
+    private float _currentSpeed;
+    private Vector3 _previosPîsition;
 
     private void Start()
     {
@@ -46,12 +53,24 @@ public class PlayerMove : MonoBehaviour
         {
             _movement.x = -_playerSpeed;
             _movement.z = 0;
-
         }
+
+        if (_currentSpeed > _maxDieSpeed || _currentSpeed < _minDieSpeed)
+        {
+            if (transform.position.z > -5)
+            {
+                SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+            }
+            
+        }
+
     }
 
     private void FixedUpdate()
     {
+        _currentSpeed = (transform.position - _previosPîsition).magnitude / Time.fixedDeltaTime;
+        _previosPîsition = transform.position;
+
         _rb.MovePosition(transform.position + _movement * Time.fixedDeltaTime);
 
         if (!_isGround)
