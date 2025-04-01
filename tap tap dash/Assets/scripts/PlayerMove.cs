@@ -69,10 +69,9 @@ private void Update()
         
     }
 
-}
 
-private void FixedUpdate()
-{
+
+void Update() {
 
     _currentSpeed = (transform.position - _previousPosition).magnitude / Time.fixedDeltaTime;
 
@@ -97,7 +96,7 @@ IEnumerator rotate(bool direction)
         yield return new WaitForSeconds(0.001f);
     }
 }
-    private void OnCollisionEnter(Collision collision)
+    void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.tag == "Ground")
         {
@@ -106,4 +105,4 @@ IEnumerator rotate(bool direction)
         }
            
     }
-}
+
